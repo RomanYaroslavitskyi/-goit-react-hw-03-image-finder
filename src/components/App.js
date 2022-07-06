@@ -26,7 +26,7 @@ class App extends Component {
       setTimeout(() => {
         FetchImages(name, page)
           .then(res => {
-            this.setState(prev=>({
+            this.setState(prev => ({
               content:
                 page === 1
                   ? res.data.hits
@@ -35,7 +35,10 @@ class App extends Component {
               total: res.data.total,
             }));
           })
-          .catch(error => console.log(error)).finally(()=>{if(page===1) window.scrollTo(0,0)});
+          .catch(error => console.log(error))
+          .finally(() => {
+            if (page === 1) window.scrollTo(0, 0);
+          });
       }, 1000);
     }
   }
@@ -48,8 +51,7 @@ class App extends Component {
 
   handleClick = () => {
     const page = this.state.page + 1;
-    this.setState({ status: 'pending' , page,});
-
+    this.setState({ status: 'pending', page });
   };
 
   getSubmitName = (name, page) => {
@@ -59,7 +61,7 @@ class App extends Component {
   getFind = idName => {
     const { content } = this.state;
     const URL = content.find(({ id }) => id === idName);
-    this.setState({ url: URL?.webformatURL });
+    this.setState({ url: URL?.largeImageURL });
   };
 
   render() {

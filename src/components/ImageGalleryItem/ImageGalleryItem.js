@@ -7,7 +7,7 @@ class ImageGalleryItem extends Component {
     const { content, toggle, getFind } = this.props;
     return (
       <>
-        {content.map(({ id, largeImageURL, user }) => (
+        {content.map(({ id, webformatURL, user }) => (
           <li
             className={s.ImageGalleryItem}
             key={id}
@@ -17,7 +17,7 @@ class ImageGalleryItem extends Component {
             }}
           >
             <img
-              src={largeImageURL}
+              src={webformatURL}
               alt={user}
               className={s.ImageGalleryItemImage}
             />

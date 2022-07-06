@@ -6,7 +6,6 @@ const { Component } = require('react');
 const modalRoot = document.querySelector('#modal-root');
 const bodyEl = document.querySelector('body');
 
-console.log(bodyEl);
 class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeydown);
@@ -36,7 +35,7 @@ class Modal extends Component {
     return createPortal(
       <div className={s.backdrop} onClick={handleBackdropClick}>
         <div className={s.content}>
-          <img src={getFind} alt="Name" />
+          <img src={getFind} alt="Name" className={s.img} />
         </div>
       </div>,
       modalRoot
