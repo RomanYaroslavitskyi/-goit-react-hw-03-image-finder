@@ -18,7 +18,6 @@ class Searchbar extends Component {
     const { nameImage, page } = this.state;
     if (nameImage.trim() !== '') {
       this.props.onSubmit(nameImage.toLocaleLowerCase().trim(), page);
-
       this.setState({ nameImage: '' });
     }
   };

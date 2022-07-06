@@ -22,17 +22,20 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const name = this.state.nameImage;
     const page = this.state.page;
-    if (prevState.nameImage !== name) {
+    if (prevState.nameImage !== name || prevState.page !== page) {
       setTimeout(() => {
         FetchImages(name, page)
           .then(res => {
-            this.setState({
-              content: res.data.hits,
+            this.setState(prev=>({
+              content:
+                page === 1
+                  ? res.data.hits
+                  : [...prev.content, ...res.data.hits],
               status: 'resolved',
               total: res.data.total,
-            });
+            }));
           })
-          .catch(error => console.log(error));
+          .catch(error => console.log(error)).finally(()=>{if(page===1) window.scrollTo(0,0)});
       }, 1000);
     }
   }
@@ -44,20 +47,9 @@ class App extends Component {
   };
 
   handleClick = () => {
-    this.setState({ status: 'pending' });
-    const name = this.state.nameImage;
     const page = this.state.page + 1;
-    setTimeout(() => {
-      FetchImages(name, page)
-        .then(res => {
-          this.setState(prev => ({
-            content: [...prev.content, ...res.data.hits],
-            page,
-            status: 'resolved',
-          }));
-        })
-        .catch(error => console.log(error));
-    }, 1000);
+    this.setState({ status: 'pending' , page,});
+
   };
 
   getSubmitName = (name, page) => {
