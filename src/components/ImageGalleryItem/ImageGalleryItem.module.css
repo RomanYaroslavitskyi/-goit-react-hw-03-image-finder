@@ -29,6 +29,6 @@ img:hover {
 .ImageGalleryItemImage:hover {
     transform: scale(1.04);
     cursor: zoom-in;
-    transition: transform .7s ease-out;
-    box-shadow: 0px 10px 13px -7px #000000, 0px 21px 44px 17px rgba(0, 0, 0, 0.76);
+    box-shadow: 0px 10px 20px 4px #000000, 0px 21px 44px 20px rgb(0 0 0 / 84%);
+    transition: transform .7s ease-out, box-shadow .7s ease-out;
 }
