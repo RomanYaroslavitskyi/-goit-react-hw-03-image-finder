@@ -4,14 +4,18 @@ import { createPortal } from 'react-dom';
 const { Component } = require('react');
 
 const modalRoot = document.querySelector('#modal-root');
+const bodyEl = document.querySelector('body');
 
+console.log(bodyEl);
 class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeydown);
+    bodyEl.classList.add('is-hidden');
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeydown);
+    bodyEl.classList.remove('is-hidden');
   }
 
   handleKeydown = e => {
