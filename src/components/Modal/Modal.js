@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import s from './Modal.module.css';
 import { createPortal } from 'react-dom';
 const { Component } = require('react');
@@ -27,8 +28,9 @@ class Modal extends Component {
 
   render() {
     const { getFind } = this.props;
+    const { handleBackdropClick } = this;
     return createPortal(
-      <div className={s.backdrop} onClick={this.handleBackdropClick}>
+      <div className={s.backdrop} onClick={handleBackdropClick}>
         <div className={s.content}>
           <img src={getFind} alt="Name" />
         </div>
@@ -39,3 +41,8 @@ class Modal extends Component {
 }
 
 export default Modal;
+
+Modal.propTypes = {
+  getFind: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+};

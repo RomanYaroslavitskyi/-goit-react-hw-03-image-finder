@@ -1,4 +1,5 @@
-import '../styles.css';
+import s from './ImageGalleryItem.module.css';
+import PropTypes from 'prop-types';
 import { Component } from 'react';
 
 class ImageGalleryItem extends Component {
@@ -8,7 +9,7 @@ class ImageGalleryItem extends Component {
       <>
         {content.map(({ id, largeImageURL, user }) => (
           <li
-            className="ImageGalleryItem"
+            className={s.ImageGalleryItem}
             key={id}
             onClick={() => {
               getFind(id);
@@ -18,7 +19,7 @@ class ImageGalleryItem extends Component {
             <img
               src={largeImageURL}
               alt={user}
-              className="ImageGalleryItem-image"
+              className={s.ImageGalleryItemImage}
             />
           </li>
         ))}
@@ -28,3 +29,15 @@ class ImageGalleryItem extends Component {
 }
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  content: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      user: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  toggle: PropTypes.func.isRequired,
+  getFind: PropTypes.func.isRequired,
+};

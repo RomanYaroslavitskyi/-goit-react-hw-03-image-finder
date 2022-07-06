@@ -1,3 +1,4 @@
+import s from './styles.module.css';
 import { Component } from 'react';
 import FetchImages from 'service/FetchImages';
 import Searchbar from './Searchbar/Searchbar';
@@ -15,20 +16,24 @@ class App extends Component {
     status: 'idle',
     showModal: false,
     url: null,
+    total: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
     const name = this.state.nameImage;
     const page = this.state.page;
     if (prevState.nameImage !== name) {
-      FetchImages(name, page)
-        .then(res => {
-          this.setState({
-            content: res.data.hits,
-            status: 'resolved',
-          });
-        })
-        .catch(this.setState({ status: 'rejected' }));
+      setTimeout(() => {
+        FetchImages(name, page)
+          .then(res => {
+            this.setState({
+              content: res.data.hits,
+              status: 'resolved',
+              total: res.data.total,
+            });
+          })
+          .catch(error => console.log(error));
+      }, 1000);
     }
   }
 
@@ -39,17 +44,20 @@ class App extends Component {
   };
 
   handleClick = () => {
+    this.setState({ status: 'pending' });
     const name = this.state.nameImage;
     const page = this.state.page + 1;
-    FetchImages(name, page)
-      .then(res => {
-        this.setState(prev => ({
-          content: [...prev.content, ...res.data.hits],
-          page,
-          status: 'resolved',
-        }));
-      })
-      .catch(this.setState({ status: 'rejected' }));
+    setTimeout(() => {
+      FetchImages(name, page)
+        .then(res => {
+          this.setState(prev => ({
+            content: [...prev.content, ...res.data.hits],
+            page,
+            status: 'resolved',
+          }));
+        })
+        .catch(error => console.log(error));
+    }, 1000);
   };
 
   getSubmitName = (name, page) => {
@@ -63,11 +71,12 @@ class App extends Component {
   };
 
   render() {
-    const { content, status, showModal, url } = this.state;
+    const { content, status, showModal, url, total } = this.state;
     const { getSubmitName, handleClick, toggleModal, getFind } = this;
     return (
-      <div>
+      <div className={s.Container}>
         <Searchbar onSubmit={getSubmitName} />
+        {total === 0 && <p className={s.text}>Enter the correct name</p>}
         <ImageGallery>
           <ImageGalleryItem
             content={content}
@@ -75,9 +84,11 @@ class App extends Component {
             getFind={getFind}
           />
         </ImageGallery>
-        {content.length > 0 && <Button onClick={handleClick} />}
+        {content.length > 0 && status === 'resolved' && (
+          <Button onClick={handleClick} />
+        )}
 
-        {status === 'rejected' && <Loader />}
+        {status === 'pending' && <Loader />}
         {showModal && <Modal getFind={url} onClose={toggleModal} />}
       </div>
     );
